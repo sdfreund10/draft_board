@@ -1,5 +1,5 @@
 <%= javascript_pack_tag 'draftBoard' %>
 <%= content_tag :div,
   id: "data",
-  data: @drafts.to_json do %>
+  data: { drafts: @drafts, user: @current_user }.to_json do %>
 <% end %>

@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
+  protect_from_forgery
   def show
-    draft_ids = session[:drafts] ||= []
-    @drafts = Draft.where(id: draft_ids)
+    @current_user = User.find_by(id: session[:user])
+    @drafts = @current_user&.drafts || []
   end
 end
