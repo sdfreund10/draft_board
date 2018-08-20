@@ -18,6 +18,13 @@ class DraftsController < ApplicationController
     end
   end
 
+  def show
+    draft = Draft.find(params["id"])
+    render json: {
+      pick: draft.latest_pick
+    }
+  end
+
   private
 
   def draft_params
