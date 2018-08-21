@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { DraftHeader } from './draftHeader'
 import { getData } from './fetchUtils'
 import { FuturePicks } from './futurePicks'
+import { PlayerTable } from './playerTable'
 
 export class Draft extends React.Component {
   constructor(props) {
@@ -38,6 +39,7 @@ export class Draft extends React.Component {
       <div className='main-content'>
         <DraftHeader draft={this.props.draft} user={this.props.user} back={this.props.back} nextPick={this.nextPick()}/>
         <FuturePicks nextPick={this.nextPick()} numPicks={this.props.draft.teams.length} teams={this.props.draft.teams}/>
+        <PlayerTable draft={this.props.draft}/>
         {this.state.loading && <h1>LOADING</h1>}
         {!this.state.loading && <h1>loaded :)</h1>}
       </div>

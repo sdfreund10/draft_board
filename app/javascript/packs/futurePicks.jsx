@@ -5,12 +5,13 @@ import PropTypes from 'prop-types'
 export class FuturePicks extends React.Component {
   currentRound() {
     let { nextPick, teams} = JSON.parse(JSON.stringify(this.props));
-    nextPick.pick = 8;
     this.computeSortOrder(nextPick.round, teams);
     return(
       teams.map((el) => {
         let background = this.background(el.pick, nextPick.pick);
-        return(<div className={`col-sm-1 border ${background}`} key={el.id}>{el.name}</div>)
+        return(
+          <a href="#" className={`btn btn-sm btn-secondary w-100 ${background}`} key={el.id}>{el.name}</a>
+        )
       })
     )
   }
@@ -20,7 +21,9 @@ export class FuturePicks extends React.Component {
     this.computeSortOrder(nextPick.round + 1, teams);
     return(
       teams.map((el) => {
-        return(<div className={`col-sm-1 bg-warning border`} key={el.id}>{el.name}</div>)
+        return(
+          <a href="#" className='btn btn-sm btn-secondary w-100 bg-warning' key={el.id}>{el.name}</a>
+        )
       })
     )
   }
@@ -44,11 +47,11 @@ export class FuturePicks extends React.Component {
 
   render() {
     return(
-      <div>
-        <div className="row justify-content-sm-center">
+      <div className='col-sm-10 offset-sm-1'>
+        <div className='btn-group d-flex' role='group'>
           {this.currentRound()}
         </div>
-        <div className="row justify-content-sm-center">
+        <div className='btn-group d-flex' role='group'>
           {this.nextRound()}
         </div>
       </div>
