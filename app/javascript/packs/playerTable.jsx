@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import { getData } from './fetchUtils'
+import { getData, postData } from './fetchUtils'
 
 export class PlayerTable extends React.Component {
   constructor(props) {
@@ -30,7 +30,27 @@ export class PlayerTable extends React.Component {
   }
 
   draftPlayer(event, playerId) {
-    debugger;
+    event.preventDefault();
+    postData('/picks', { pick: {
+        player_id: playerId, draft_id: this.props.draft.id,
+        limit: this.state.limit, page: this.state.page,
+        round: this.props.nextPick.round, pick: this.props.nextPick.pick,
+        overall: this.props.nextPick.overall, team_id: this.props.nextPickTeam.id
+      }
+    }).then((response) => response.json()).then(
+      (responseJSON) => {
+        this.popPlayer(responseJSON);
+        this.props.incrementPick(responseJSON);
+      }
+    )
+  }
+  popPlayer(playerParams) {
+    let players = this.state.players.filter(function(player) {
+      return(playerParams.pick.player_id !== player.id)
+    });
+
+    players.push(playerParams.player);
+    this.setState({ players: players });
   }
 
   teamTable() {

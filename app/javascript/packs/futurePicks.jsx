@@ -30,7 +30,7 @@ export class FuturePicks extends React.Component {
 
   computeSortOrder(round, teams) {
     if(round % 2 === 0) {
-      teams.forEach((team) => { team.pick = (team.pick - teams.length -1) * -1 });
+      teams.forEach((team) => { team.pick = (team.pick - teams.length - 1) * -1 });
     }
     return(teams.sort((a, b) => { return(a.pick - b.pick) }));
   }

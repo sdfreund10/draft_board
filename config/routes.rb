@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   resources :sessions, only: [:create]
   resources :users, only: [:create]
   resources :undrafted_players, only: [:index]
+  resources :picks, only: [:create]
 end
