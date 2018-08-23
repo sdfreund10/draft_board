@@ -1,1 +1,1 @@
-`cat #{Rails.root.join("db", "seeds.sql")} | rails db`
+# ActiveRecord::Base.connection.execute(Rails.root.join("db", "seeds.sql").read)
