@@ -5,6 +5,7 @@ import { DraftHeader } from './draftHeader'
 import { getData } from './fetchUtils'
 import { FuturePicks } from './futurePicks'
 import { PlayerTable } from './playerTable'
+import { TeamSummary } from './teamSummary'
 
 export class Draft extends React.Component {
   constructor(props) {
@@ -48,7 +49,7 @@ export class Draft extends React.Component {
     let nextPick = this.nextPick();
     let nextPickRaw;
     if (!this.state.lastPick) {
-      return(null);
+      nextPickRaw = 1;
     } else if (nextPick.round % 2 === 0) {
       nextPickRaw = this.props.draft.teams.length - nextPick.pick + 1;
     } else {
@@ -59,6 +60,20 @@ export class Draft extends React.Component {
     )
   }
 
+  viewTeamSummary(team) {
+    let url = `teams/${team.id}?format=${this.props.draft.format}`;
+    getData(url).then(response => response.json()).then(
+      (responseJSON) => {
+        let currentSummary = this.state.currentTeamSummary;
+        if (JSON.stringify(currentSummary) === JSON.stringify(responseJSON)) {
+          this.setState({ currentTeamSummary: null })  
+        } else {
+          this.setState({ currentTeamSummary: responseJSON })
+        }
+      }
+    )
+  }
+
   render() {
     return(
       <div className='main-content'>
@@ -66,7 +81,9 @@ export class Draft extends React.Component {
                      back={this.props.back} nextPick={this.nextPick()}/>
         <FuturePicks nextPick={this.nextPick()}
                      numPicks={this.props.draft.teams.length}
-                     teams={this.props.draft.teams}/>
+                     teams={this.props.draft.teams}
+                     viewTeam={this.viewTeamSummary.bind(this)}/>
+        <TeamSummary summary={this.state.currentTeamSummary}/>
         <PlayerTable draft={this.props.draft} nextPick={this.nextPick()}
                      incrementPick={this.incrementPick.bind(this)}
                      nextPickTeam={this.nextPickTeam()}/>

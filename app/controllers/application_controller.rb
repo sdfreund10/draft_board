@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   def user_drafts
     drafts = @current_user&.drafts
-    return [] if drafts.empty?
+    return [] if drafts.blank?
     drafts.includes(:teams).map do |draft|
       draft.attributes.merge({ teams: draft.teams })
     end

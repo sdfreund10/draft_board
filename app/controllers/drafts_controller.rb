@@ -25,6 +25,12 @@ class DraftsController < ApplicationController
     }
   end
 
+  def destroy
+    draft = Draft.find(params[:id])
+    draft.destroy!
+    render json: { status: 200 }
+  end
+
   private
 
   def draft_params

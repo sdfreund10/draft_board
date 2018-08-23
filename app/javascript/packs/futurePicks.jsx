@@ -10,7 +10,10 @@ export class FuturePicks extends React.Component {
       teams.map((el) => {
         let background = this.background(el.pick, nextPick.pick);
         return(
-          <a href="#" className={`btn btn-sm btn-secondary w-100 ${background}`} key={el.id}>{el.name}</a>
+          <a className={`btn btn-sm btn-secondary w-100 ${background}`}
+             key={el.id} onClick={(e) => { this.props.viewTeam(el) }}>
+            {el.name}
+          </a>
         )
       })
     )
@@ -22,7 +25,10 @@ export class FuturePicks extends React.Component {
     return(
       teams.map((el) => {
         return(
-          <a href="#" className='btn btn-sm btn-secondary w-100 bg-warning' key={el.id}>{el.name}</a>
+          <a className='btn btn-sm btn-secondary w-100 bg-warning'
+             key={el.id} onClick={(e) => { this.props.viewTeam(el) }}>
+            {el.name}
+          </a>
         )
       })
     )

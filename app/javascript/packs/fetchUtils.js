@@ -22,3 +22,15 @@ export function getData (url) {
     })
   )
 }
+
+export function deleteData (url) {
+  return(
+    fetch(url, {
+      method: "DELETE",
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json', 'Content-Type': 'application/json'
+      }
+    })
+  )
+}

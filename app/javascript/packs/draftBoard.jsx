@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { NewDraftForm } from './newDraftForm'
 import { UserLogin } from './userLogin'
 import { Draft } from './draft'
-import { postData } from './fetchUtils'
+import { postData, deleteData } from './fetchUtils'
 
 class DraftBoard extends React.Component {
   constructor(props) {
@@ -45,8 +45,14 @@ class DraftBoard extends React.Component {
   }
 
   removeDraft(event, draft) {
-    debugger;
-    this.state.drafts.find(el => el.id === draft.id)
+    if(window.confirm('Are you sure you wish to delete this draft?')){
+      debugger;
+      let url = `drafts/${draft.id}`
+      deleteData(url).then(() =>{
+        let drafts = this.state.drafts.filter(el => draft.id !== el.id);
+        this.setState({ drafts: drafts })
+      })
+    }
   }
 
   draftsTable() {
