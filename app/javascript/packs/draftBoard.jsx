@@ -46,7 +46,6 @@ class DraftBoard extends React.Component {
 
   removeDraft(event, draft) {
     if(window.confirm('Are you sure you wish to delete this draft?')){
-      debugger;
       let url = `drafts/${draft.id}`
       deleteData(url).then(() =>{
         let drafts = this.state.drafts.filter(el => draft.id !== el.id);

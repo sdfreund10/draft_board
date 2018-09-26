@@ -1,6 +1,7 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import { Col, ButtonGroup, Button } from 'react-bootstrap';
 
 export class FuturePicks extends React.Component {
   currentRound() {
@@ -53,14 +54,14 @@ export class FuturePicks extends React.Component {
 
   render() {
     return(
-      <div className='col-sm-10 offset-sm-1'>
-        <div className='btn-group d-flex' role='group'>
+      <Col sm={10} smOffset={1}>
+        <ButtonGroup justified>
           {this.currentRound()}
-        </div>
-        <div className='btn-group d-flex' role='group'>
+        </ButtonGroup>
+        <ButtonGroup justified>
           {this.nextRound()}
-        </div>
-      </div>
+        </ButtonGroup>
+      </Col>
     )
   }
 }

@@ -2,15 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { getData } from './fetchUtils'
+import { Col, Row } from 'react-bootstrap'
 
 export class TeamSummary extends React.Component {
   colForPosition(position, decorated) {
     let summary = this.props.summary;
     return(
-      <div className='col card' key={position}>
-        <div className='row'>{decorated}: {summary.summary[position] || 0}</div>
+      <Col md={2} key={position}>
+        <Row>{decorated}: {summary.summary[position] || 0}</Row>
         {this.positionTable(position)}
-      </div>
+      </Col>
     )
   }
   positionTable(position) {
@@ -19,27 +20,26 @@ export class TeamSummary extends React.Component {
     });
     let playersTable = players.map((player) => {
       return(
-        <div className='row h-25' key={player.id}>
+        <Row key={player.id}>
           <p>{player.name} - {Math.round(player.rank)}</p>
-        </div>
+        </Row>
       )
     });
     return(playersTable);
   }
   render() {
     if(this.props.summary) {
-      console.log(this.props.summary.players);
       return(
         <div className='container'>
-          <div className='row'><h4>{this.props.summary.team.name}</h4></div>
-          <div className='row'>
+          <Row><h4>{this.props.summary.team.name}</h4></Row>
+          <Row>
             {this.colForPosition('QB', 'QB')}
             {this.colForPosition('RB', 'RB')}
             {this.colForPosition('WR', 'WR')}
             {this.colForPosition('TE', 'TE')}
             {this.colForPosition('DST', 'D/ST')}
             {this.colForPosition('K', 'K')}
-          </div>
+          </Row>
         </div>
       )
     } else {

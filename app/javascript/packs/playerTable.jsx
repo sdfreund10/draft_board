@@ -1,7 +1,8 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types'
-import { getData, postData } from './fetchUtils'
+import React from 'react';
+import ReactDOM, {render} from 'react-dom';
+import PropTypes from 'prop-types';
+import { getData, postData } from './fetchUtils';
+import { ButtonGroup, Button, SplitButton, MenuItem, Col, Table } from 'react-bootstrap';
 
 export class PlayerTable extends React.Component {
   constructor(props) {
@@ -29,13 +30,13 @@ export class PlayerTable extends React.Component {
     )
   }
 
-  draftPlayer(event, playerId) {
+  draftPlayer(event, playerId, teamId) {
     event.preventDefault();
     postData('/picks', { pick: {
         player_id: playerId, draft_id: this.props.draft.id,
         limit: this.state.limit, page: this.state.page,
         round: this.props.nextPick.round, pick: this.props.nextPick.pick,
-        overall: this.props.nextPick.overall, team_id: this.props.nextPickTeam.id
+        overall: this.props.nextPick.overall, team_id: teamId
       }
     }).then((response) => response.json()).then(
       (responseJSON) => {
@@ -60,11 +61,29 @@ export class PlayerTable extends React.Component {
           <td>{index + 1 + this.state.page * this.state.limit}</td>
           <td>{player.name}</td><td>{player.position}</td><td>{player.team}</td>
           <td>{player.bye_week}</td><td>{parseFloat(player.rank).toFixed(2)}</td>
-          <td><button className='btn btn-outline-danger' onClick={(e) => { this.draftPlayer(e, player.id)}}>Draft!</button></td>
+          <td>
+            <SplitButton bsStyle='danger' title='Draft!' key={player.id}
+                         className='btn-outline-danger'
+                         onClick={(e) => { this.draftPlayer(e, player.id, this.props.nextPickTeam.id)}}
+                         id={`draft-${player.name.replace(/\.\s+/g, '-').toLowerCase()}`}>
+              {this.teamOptions(player.id)}
+            </SplitButton>
+          </td>
         </tr>
       )
     })
     return(table)  
+  }
+
+  teamOptions(playerId) {
+    let teamMenu = this.props.draft.teams.map((team) => {
+      return(
+        <MenuItem eventKey={team.id} key={team.id}
+                  onClick={(e) => { this.draftPlayer(e, playerId, team.id) }}>
+          {team.name}
+        </MenuItem>)
+    });
+    return(teamMenu)
   }
 
   pageUp() {
@@ -83,8 +102,8 @@ export class PlayerTable extends React.Component {
 
   render() {
     return(
-      <div className='col-sm-12'>
-        <table className='table table-hover'>
+      <Col sm={12}>
+        <Table hover>
         <thead><tr>
           <th/><th>Player</th><th>Position</th><th>Team</th>
           <th>Bye</th><th>Avg Rank</th><th/>
@@ -96,14 +115,14 @@ export class PlayerTable extends React.Component {
           <tr><td colSpan='7' className='text-right'>
             {this.state.page * this.state.limit + 1}-{this.state.page * this.state.limit + this.state.limit} of {this.state.total}
             {' '}
-            <div className='btn-group'>
-              <button className='btn btn-outline-secondary'onClick={this.pageDown}>{'<'}</button>
-              <button className='btn btn-outline-secondary' onClick={this.pageUp}>{'>'}</button>
-            </div>
+            <ButtonGroup>
+              <Button bsStyle='default' onClick={this.pageDown}>{'<'}</Button>
+              <Button bsStyle='default' onClick={this.pageUp}>{'>'}</Button>
+            </ButtonGroup>
           </td></tr>
           </tfoot>
-        </table>
-      </div>
+        </Table>
+      </Col>
     )
   }
 }

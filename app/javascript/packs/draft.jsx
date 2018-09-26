@@ -6,6 +6,7 @@ import { getData } from './fetchUtils'
 import { FuturePicks } from './futurePicks'
 import { PlayerTable } from './playerTable'
 import { TeamSummary } from './teamSummary'
+import { Grid, Col, Row } from 'react-bootstrap'
 
 export class Draft extends React.Component {
   constructor(props) {
@@ -76,18 +77,24 @@ export class Draft extends React.Component {
 
   render() {
     return(
-      <div className='main-content'>
-        <DraftHeader draft={this.props.draft} user={this.props.user}
-                     back={this.props.back} nextPick={this.nextPick()}/>
-        <FuturePicks nextPick={this.nextPick()}
-                     numPicks={this.props.draft.teams.length}
-                     teams={this.props.draft.teams}
-                     viewTeam={this.viewTeamSummary.bind(this)}/>
-        <TeamSummary summary={this.state.currentTeamSummary}/>
-        <PlayerTable draft={this.props.draft} nextPick={this.nextPick()}
-                     incrementPick={this.incrementPick.bind(this)}
-                     nextPickTeam={this.nextPickTeam()}/>
-      </div>
+      <Grid className='main-content'>
+        <Col sm={12} md={12}>
+          <DraftHeader draft={this.props.draft} user={this.props.user}
+                       back={this.props.back} nextPick={this.nextPick()}/>
+          <Row>
+            <FuturePicks nextPick={this.nextPick()}
+                         numPicks={this.props.draft.teams.length}
+                         teams={this.props.draft.teams}
+                         viewTeam={this.viewTeamSummary.bind(this)}/>
+          </Row>
+          <Row>
+            <TeamSummary summary={this.state.currentTeamSummary}/>
+          </Row>
+          <PlayerTable draft={this.props.draft} nextPick={this.nextPick()}
+                       incrementPick={this.incrementPick.bind(this)}
+                       nextPickTeam={this.nextPickTeam()}/>
+        </Col>
+      </Grid>
     )
   }
 }
