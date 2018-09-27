@@ -2,6 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { TeamsForm } from './teamsForm'
+import {
+  Button, Col, Row, FormGroup, ControlLabel, FormControl
+} from 'react-bootstrap';
 
 export class NewDraftForm extends React.Component {
   constructor(props) {
@@ -61,41 +64,46 @@ export class NewDraftForm extends React.Component {
   render() {
     return(
       <div className='text-center text-primary'>
-        <div className='row'>
+        <Row>
           { this.props.cancelable && 
-            <div className='col-sm-1'>
-              <button className='btn btn-outline-danger' onClick={this.props.back}>Back</button>
-            </div>
+            <Col sm={1}>
+              <Button bsStyle='danger' onClick={this.props.back}>Back</Button>
+            </Col>
           }
-          <div className={`col-sm-6 offset-sm-${this.props.cancelable ? '2' : '3'}`}>
+          <Col sm={6} smOffset={this.props.cancelable ? 2 : 3}>
             <h1>Create A New Draft</h1>
-          </div>
-        </div>
+          </Col>
+        </Row>
         <form onSubmit={this.handleSubmit.bind(this)}>
-          <div className='col-sm-6 offset-sm-3'>
-            <div className="form-group">
+          <Col sm={6} smOffset={3}>
+            <FormGroup>
               <label>Draft Name</label>
-              <input className="form-control" id='name'
-                     value={this.state.name} onChange={this.handleChange}/>
-            </div>
-            <div className="form-group">
-              <label>League Format</label>
-              <select className="form-control" id='format'
-                      value={this.state.format} onChange={this.handleChange}>
+              <FormControl type="text" value={this.state.value} id='name'
+                           onChange={this.handleChange}/>
+            </FormGroup>
+            <FormGroup>
+              <ControlLabel>League Format</ControlLabel>
+              <FormControl componentClass="select" id='format'
+                           value={this.state.format}
+                           onChange={this.handleChange}>
                 <option value='standard'>Standard</option>
                 <option value='ppr'>PPR</option>
                 <option value='half'>Half PPR</option>
-              </select>
-            </div>
-          </div>
-        <div className='mx-sm-auto col-sm-12'>
-          <button type='button' className='btn btn-block btn-sm bg-light' onClick={this.addTeam.bind(this)}>Add Team</button>
-        </div>
+              </FormControl>
+            </FormGroup>
+          </Col>
+          <Col sm={12}>
+            <Button bsSize='small' block onClick={this.addTeam.bind(this)}>
+              Add Team
+            </Button>
+          </Col>
           <TeamsForm teams={this.state.teams}
                      changeName={this.changeTeamName.bind(this)}
                      addTeam={this.addTeam.bind(this)}
                      removeTeam={this.removeTeam.bind(this)}/>
-          <button type="submit" className="btn btn-primary">Submit</button>
+          <Button bsStyle='primary' type='submit'>
+            Submit
+          </Button>
         </form>
       </div>
     )
