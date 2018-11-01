@@ -78,7 +78,7 @@ export class NewDraftForm extends React.Component {
           <Col sm={6} smOffset={3}>
             <FormGroup>
               <label>Draft Name</label>
-              <FormControl type="text" value={this.state.value} id='name'
+              <FormControl type="text" placeholder={this.state.name} id='name'
                            onChange={this.handleChange}/>
             </FormGroup>
             <FormGroup>
