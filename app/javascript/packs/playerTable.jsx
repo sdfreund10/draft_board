@@ -2,24 +2,32 @@ import React from 'react';
 import ReactDOM, {render} from 'react-dom';
 import PropTypes from 'prop-types';
 import { getData, postData } from './fetchUtils';
-import { ButtonGroup, Button, SplitButton, MenuItem, Col, Table } from 'react-bootstrap';
+import { ButtonGroup, Button, SplitButton, MenuItem, Col, Table, FormControl } from 'react-bootstrap';
 
 export class PlayerTable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { players: [], limit: 25, page: 0 }
+    this.state = { players: [], limit: 25, page: 0, searchFilter: '' }
     this.pageDown = this.pageDown.bind(this);
     this.pageUp = this.pageUp.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentWillMount() {
     this.getData();
   }
 
+  componentDidUpdate(test, newState) {
+    const prevState = this.state;
+    if(prevState.page !== newState.page || prevState.searchFilter !== newState.searchFilter) {
+      this.getData();
+    }
+  }
+
   getData() {
     this.setState( { loading: true });
-    let { limit, page } = this.state;
-    let url = `undrafted_players?id=${this.props.draft.id}&limit=${limit}&page=${page}`;
+    let { limit, page, searchFilter } = this.state;
+    let url = `undrafted_players?id=${this.props.draft.id}&limit=${limit}&page=${page}&search=${searchFilter}`;
 
     getData(url).then(response => response.json()).then(
       (responseJSON) => {
@@ -90,19 +98,26 @@ export class PlayerTable extends React.Component {
     // insert logic for max page
     let newStart = (this.state.page + 1) * this.state.limit;
     if(newStart <= this.state.total) {
-      this.setState({ page: this.state.page + 1 }, () => { this.getData() });
+      this.setState({ page: this.state.page + 1 });
     }
   }
 
   pageDown() {
     if(this.state.page !== 0) {
-      this.setState({ page: this.state.page - 1 }, () => { this.getData() });
+      this.setState({ page: this.state.page - 1 });
     }
+  }
+
+  handleSearch(event) {
+    this.setState({ searchFilter: event.target.value });
   }
 
   render() {
     return(
       <Col sm={12}>
+        <Col sm={2} smOffset={10}>
+          <FormControl type="text" value={this.state.searchFilter} onChange={this.handleSearch}/>
+        </Col>
         <Table hover>
         <thead><tr>
           <th/><th>Player</th><th>Position</th><th>Team</th>
