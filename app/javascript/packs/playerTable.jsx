@@ -11,6 +11,7 @@ export class PlayerTable extends React.Component {
     this.pageDown = this.pageDown.bind(this);
     this.pageUp = this.pageUp.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.searchQuery;
   }
 
   componentWillMount() {
@@ -19,8 +20,9 @@ export class PlayerTable extends React.Component {
 
   componentDidUpdate(test, newState) {
     const prevState = this.state;
-    if(prevState.page !== newState.page || prevState.searchFilter !== newState.searchFilter) {
-      this.getData();
+    if (prevState.page !== newState.page || prevState.searchFilter !== newState.searchFilter) {
+      clearTimeout(this.searchQuery);
+      this.searchQuery = setTimeout(this.getData.bind(this), 300);
     }
   }
 
